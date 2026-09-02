@@ -107,32 +107,69 @@ body::before{
 }
 
 /* ---------- 2. 결과 (부적) ---------- */
-#result{display:none;padding:56px 0 0}
+#result{display:none;padding:56px 0 0;position:relative}
 #result.on{display:block}
 
-.talisman{
-  position:relative;margin:0 auto;max-width:340px;
-  background:
-    linear-gradient(175deg,#EBDDB2 0%, #DCC894 46%, #E5D6A9 100%);
-  padding:46px 30px 84px;
-  box-shadow:0 24px 60px rgba(0,0,0,.6);
-  animation:drop .7s cubic-bezier(.22,1,.36,1) both;
+/* ===== 복주머니 ===== */
+.pouch{
+  position:absolute;left:50%;top:118px;
+  width:214px;height:230px;margin-left:-107px;
+  z-index:5;pointer-events:none;transform-origin:50% 88%;
+  animation:pIn .42s cubic-bezier(.2,1.5,.5,1) both,
+            pWob .30s ease-in-out .44s 3,
+            pOut .36s cubic-bezier(.5,0,.9,.6) 1.42s forwards;
 }
-@keyframes drop{
-  0%{opacity:0;transform:translateY(-28px) rotate(-1.6deg)}
-  100%{opacity:1;transform:none}
+@keyframes pIn{from{opacity:0;transform:scale(.3) translateY(-40px)}
+               to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes pWob{
+  0%   {transform:rotate(0) translateX(0) scale(1)}
+  15%  {transform:rotate(-13deg) translateX(-9px) scale(1.03,.97)}
+  32%  {transform:rotate(11deg) translateX(8px) scale(.97,1.03)}
+  50%  {transform:rotate(-10deg) translateX(-7px) scale(1.04,.96)}
+  68%  {transform:rotate(12deg) translateX(7px) scale(.96,1.04)}
+  85%  {transform:rotate(-7deg) translateX(-4px) scale(1.02,.98)}
+  100% {transform:rotate(0) translateX(0) scale(1)}
 }
-/* 부적 톱니 가장자리 */
-.talisman::before,.talisman::after{
-  content:'';position:absolute;left:0;right:0;height:9px;
-  background:repeating-linear-gradient(90deg,#E5D6A9 0 9px,transparent 9px 18px);
-}
-.talisman::before{top:-8px;
-  -webkit-mask:radial-gradient(circle 5px at 50% 100%,transparent 98%,#000);}
-.talisman::after{bottom:-8px}
+.pouch img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.pouch .po{opacity:0;animation:swap .01s linear 1.30s forwards}
+@keyframes swap{to{opacity:1}}
+@keyframes pOut{0%{opacity:1;transform:scale(1)}
+                35%{opacity:1;transform:scale(1.14,.9)}
+                100%{opacity:0;transform:scale(.22) translateY(-10px)}}
 
-.t-frame{position:absolute;inset:13px;border:1.5px solid rgba(176,40,31,.42);pointer-events:none}
-.t-frame::after{content:'';position:absolute;inset:5px;border:.5px solid rgba(176,40,31,.28)}
+/* 주머니에서 새는 빛 */
+.glow{
+  position:absolute;left:50%;top:150px;width:210px;height:210px;
+  margin-left:-105px;border-radius:50%;z-index:4;pointer-events:none;
+  background:radial-gradient(circle,rgba(232,201,120,.85),rgba(232,201,120,0) 62%);
+  opacity:0;animation:gPulse .86s ease-out 1.28s forwards;
+}
+@keyframes gPulse{0%{opacity:0;transform:scale(.3)}
+                  45%{opacity:1;transform:scale(1.05)}
+                  100%{opacity:0;transform:scale(1.7)}}
+
+.talisman{
+  position:relative;margin:0 auto;max-width:352px;
+  background:url("bujeok.webp") center/100% 100% no-repeat;
+  padding:74px 46px 148px;
+  filter:drop-shadow(0 22px 46px rgba(0,0,0,.62));
+  transform-origin:50% 26%;
+  animation:rise .72s cubic-bezier(.16,1.06,.3,1) 1.70s both,
+            sway 1.6s ease-in-out 4.6s 1;
+}
+@keyframes rise{
+  0%{opacity:0;transform:translateY(26px) scale(.2) rotate(-3deg)}
+  40%{opacity:1}
+  100%{opacity:1;transform:translateY(0) scale(1) rotate(0)}
+}
+@keyframes rise2{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+@keyframes sway{
+  0%,100%{transform:rotate(0)}
+  30%{transform:rotate(.7deg)}
+  65%{transform:rotate(-.5deg)}
+}
+
+.t-frame{display:none}
 
 .t-mark{
   font-family:'Noto Serif KR',serif;font-size:11px;letter-spacing:.55em;
@@ -148,27 +185,27 @@ body::before{
 .t-line{
   font-family:'Noto Serif KR',serif;font-weight:600;
   font-size:21px;line-height:1.72;color:#3A2418;text-align:center;
-  opacity:0;animation:rise .5s ease both;
+  opacity:0;animation:rise2 .5s ease both;
 }
-.t-line:nth-child(1){animation-delay:.5s}
-.t-line:nth-child(2){animation-delay:.78s}
-.t-line:nth-child(3){animation-delay:1.06s}
-.t-line:nth-child(4){animation-delay:1.34s;color:var(--jusa);font-weight:900;font-size:23px;margin-top:4px}
-@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+.t-line:nth-child(1){animation-delay:2.50s}
+.t-line:nth-child(2){animation-delay:2.68s}
+.t-line:nth-child(3){animation-delay:2.86s}
+.t-line:nth-child(4){animation-delay:3.30s;color:var(--jusa);font-weight:900;font-size:23px;margin-top:4px}
+
 
 .t-close{
-  margin-top:30px;text-align:center;font-family:'Noto Serif KR',serif;
+  margin-top:34px;text-align:center;font-family:'Noto Serif KR',serif;
   font-size:15px;color:rgba(58,36,24,.55);letter-spacing:.1em;
-  opacity:0;animation:rise .5s ease 1.7s both;
+  opacity:0;animation:rise2 .5s ease 3.75s both;
 }
 /* 낙관 — 김키위 */
 .seal{
-  position:absolute;right:22px;bottom:18px;
+  position:absolute;right:48px;bottom:52px;
   display:flex;flex-direction:column;align-items:center;gap:2px;
   opacity:0;transform:rotate(-7deg) scale(2.1);
-  animation:stamp .34s cubic-bezier(.3,1.5,.6,1) 2s both;
+  animation:stamp .36s cubic-bezier(.3,1.6,.6,1) 4.10s both;
 }
-.seal img{width:74px;height:74px;display:block;
+.seal img{width:66px;height:66px;display:block;
   filter:drop-shadow(0 2px 3px rgba(58,36,24,.28))}
 .seal span{
   font-family:'Noto Serif KR',serif;font-weight:900;font-size:15px;
@@ -182,7 +219,7 @@ body::before{
 }
 
 .acts{display:flex;gap:11px;margin:34px auto 0;max-width:340px;
-  opacity:0;animation:rise .5s ease 2.3s both}
+  opacity:0;animation:rise2 .5s ease 4.50s both}
 .act{
   flex:1;padding:15px 8px;background:transparent;color:var(--dust);
   border:1px solid rgba(228,213,168,.24);border-radius:2px;
@@ -199,7 +236,7 @@ body::before{
   margin-top:96px;background:#FBFAF7;color:#17130F;
   padding:60px 26px 76px;
   margin-left:-24px;margin-right:-24px;
-  opacity:0;animation:rise .6s ease 2.6s both;
+  opacity:0;animation:rise2 .6s ease 4.75s both;
 }
 .reveal-in{max-width:472px;margin:0 auto}
 .r-tag{font-size:12.5px;color:#9A9188;letter-spacing:.02em;margin-bottom:22px}
@@ -245,7 +282,7 @@ body::before{
 @media (max-width:400px){
   .slot{width:56px;height:76px;font-size:34px}
   .slots{gap:9px}
-  .talisman{padding:40px 22px 78px}
+  .talisman{padding:62px 34px 128px}
   .t-line{font-size:19px}
   .t-line:nth-child(4){font-size:21px}
 }
@@ -294,6 +331,12 @@ body::before{
 
   <!-- 결과 -->
   <section id="result">
+    <div class="glow" id="glow"></div>
+    <div class="pouch" id="pouch" aria-hidden="true">
+      <img src="pouch_closed.webp" alt="">
+      <img class="po" src="pouch_opened.webp" alt="">
+    </div>
+
     <div class="talisman" id="tal">
       <div class="t-frame"></div>
       <div class="t-mark">하 반 기 운 세</div>
@@ -414,6 +457,14 @@ function show(d){
   stage.style.display='none';
   result.classList.add('on');
   window.scrollTo(0,0);
+  // 다시 볼 때 애니메이션 재생
+  ['pouch','glow','tal'].forEach(id=>{
+    const e=$(id); if(!e) return;
+    e.style.animation='none'; void e.offsetWidth; e.style.animation='';
+  });
+  document.querySelectorAll('.t-line,.t-close,.seal,.acts,.reveal').forEach(e=>{
+    e.style.animation='none'; void e.offsetWidth; e.style.animation='';
+  });
   // 결과 고유 URL — 이게 확산 장치
   history.replaceState(null,'','?k='+toCode(parseInt(curNum,10)));
 }
@@ -440,49 +491,48 @@ function pop(msg){
 $('save').addEventListener('click',()=>{
   const W=1080,H=1350,c=document.createElement('canvas');
   c.width=W;c.height=H;const x=c.getContext('2d');
-
-  x.fillStyle='#14100C';x.fillRect(0,0,W,H);
-
-  const PX=110,PY=120,PW=W-PX*2,PH=H-PY*2;
-  const g=x.createLinearGradient(0,PY,0,PY+PH);
-  g.addColorStop(0,'#EBDDB2');g.addColorStop(.46,'#DCC894');g.addColorStop(1,'#E5D6A9');
-  x.fillStyle=g;x.fillRect(PX,PY,PW,PH);
-
-  x.strokeStyle='rgba(176,40,31,.42)';x.lineWidth=3;
-  x.strokeRect(PX+22,PY+22,PW-44,PH-44);
-  x.strokeStyle='rgba(176,40,31,.26)';x.lineWidth=1.5;
-  x.strokeRect(PX+34,PY+34,PW-68,PH-68);
-
   const SER='"Noto Serif KR",serif';
-  x.textAlign='center';
+  const PX=54,PY=68,PW=W-PX*2,PH=H-PY*2;
 
-  x.fillStyle='rgba(176,40,31,.72)';
-  x.font='600 26px '+SER;
-  x.fillText('하 반 기 운 세',W/2,PY+96);
-
-  x.fillStyle='#241E18';
-  x.font='900 92px '+SER;
-  x.fillText(curNum.split('').join('  '),W/2,PY+206);
-
-  x.strokeStyle='rgba(176,40,31,.5)';x.lineWidth=3;
-  x.beginPath();x.moveTo(W/2-40,PY+256);x.lineTo(W/2+40,PY+256);x.stroke();
-
-  const ls=[...lines].map(e=>e.textContent);
-  let ty=PY+346;
-  ls.forEach((t,i)=>{
-    if(i===3){ x.fillStyle='#B0281F'; x.font='900 50px '+SER; ty+=14; }
-    else{ x.fillStyle='#3A2418'; x.font='600 46px '+SER; }
-    x.fillText(t,W/2,ty); ty+=94;
-  });
-
-  x.fillStyle='rgba(58,36,24,.55)';x.font='400 34px '+SER;
-  x.fillText('이상임.',W/2,ty+42);
-
-  const finish=()=>{
-    x.textBaseline='alphabetic';
-    x.fillStyle='rgba(228,213,168,.4)';x.font='400 24px "Noto Sans KR",sans-serif';
+  const paint=(bg,kw)=>{
+    x.fillStyle='#14100C';x.fillRect(0,0,W,H);
+    if(bg) x.drawImage(bg,PX,PY,PW,PH);
     x.textAlign='center';
-    x.fillText('재미로 보는 것임 · 에이닷 전화',W/2,H-46);
+
+    x.fillStyle='rgba(176,40,31,.75)';x.font='600 27px '+SER;
+    x.fillText('하 반 기 운 세',W/2,PY+PH*0.135);
+
+    x.fillStyle='#3A2A1E';x.font='900 94px '+SER;
+    x.fillText(curNum.split('').join('  '),W/2,PY+PH*0.235);
+
+    x.strokeStyle='rgba(176,40,31,.55)';x.lineWidth=3;
+    x.beginPath();x.moveTo(W/2-42,PY+PH*0.278);x.lineTo(W/2+42,PY+PH*0.278);x.stroke();
+
+    const ls=[...lines].map(e=>e.textContent);
+    let ty=PY+PH*0.372;
+    ls.forEach((t,i)=>{
+      if(i===3){ x.fillStyle='#A8241C'; x.font='900 50px '+SER; ty+=16; }
+      else{ x.fillStyle='#3A2A1E'; x.font='600 46px '+SER; }
+      x.fillText(t,W/2,ty); ty+=92;
+    });
+
+    x.fillStyle='rgba(74,52,36,.55)';x.font='400 34px '+SER;
+    x.fillText('이상임.',W/2,ty+46);
+
+    x.save();
+    x.translate(PX+PW-176,PY+PH-214);x.rotate(-7*Math.PI/180);
+    if(kw) x.drawImage(kw,-64,-64,128,128);
+    x.strokeStyle='rgba(168,36,28,.6)';x.lineWidth=3;
+    x.beginPath();x.moveTo(-42,76);x.lineTo(42,76);x.stroke();
+    x.fillStyle='#A8241C';x.font='900 30px '+SER;
+    x.textAlign='center';x.textBaseline='top';
+    x.fillText('김키위',0,84);
+    x.restore();
+
+    x.textBaseline='alphabetic';x.textAlign='center';
+    x.fillStyle='rgba(228,213,168,.42)';x.font='400 25px "Noto Sans KR",sans-serif';
+    x.fillText('@adot.wiki  ·  재미로 보는 것임',W/2,H-30);
+
     const a=document.createElement('a');
     a.download='전화번호운세_'+curNum+'.png';
     a.href=c.toDataURL('image/png');
@@ -490,27 +540,11 @@ $('save').addEventListener('click',()=>{
     pop('저장했습니다');
   };
 
-  const drawSeal=(img)=>{
-    x.save();
-    x.translate(W-PX-120,H-PY-178);x.rotate(-7*Math.PI/180);
-    if(img) x.drawImage(img,-72,-72,144,144);
-    x.strokeStyle='rgba(176,40,31,.5)';x.lineWidth=3;
-    x.beginPath();x.moveTo(-46,84);x.lineTo(46,84);x.stroke();
-    x.fillStyle='#B0281F';x.font='900 32px '+SER;
-    x.textAlign='center';x.textBaseline='top';
-    x.fillText('김키위',0,92);
-    x.restore();
-    finish();
-  };
-
-  const src=document.getElementById('kiwiImg');
-  if(src && src.complete && src.naturalWidth){ drawSeal(src); }
-  else{
-    const im=new Image();
-    im.onload=()=>drawSeal(im);
-    im.onerror=()=>drawSeal(null);
-    im.src=src ? src.src : '';
-  }
+  const kwEl=$('kiwiImg');
+  const bg=new Image();
+  bg.onload=()=>paint(bg,(kwEl&&kwEl.complete&&kwEl.naturalWidth)?kwEl:null);
+  bg.onerror=()=>paint(null,(kwEl&&kwEl.complete&&kwEl.naturalWidth)?kwEl:null);
+  bg.src='bujeok.webp';
 });
 
 /* ---- URL 파라미터로 바로 결과 ---- */
